@@ -25,7 +25,7 @@
                 <th>Price</th>
                 <th>Quantity</th>
                 <th>Category</th>
-                <th></th>
+                <th>Add to cart</th>
             </tr>
             <c:forEach items="${listProduct}" var="p">
                 <tr>
@@ -37,10 +37,16 @@
                     <td name="price">${p.price}</td>
                     <td name="quantity">${p.stock_quantity}</td>
                     <td name="category">${p.category}</td>
-                    <td><button type="submit">Add to cart</button></td>
+                    <td style="text-align: center">
+                        <form action="CartItemsListController" method="POST">
+                            <input type="hidden" name="id" value="${productItem.productId}">
+                            <input type="submit" value="+" />
+                        </form>
+                    </td>
                 </form>
             </tr>
         </c:forEach>
+        <a href="cart.jsp"><h2>Show Your Cart</h2> </a>
     </table>
 </body>
 </html>

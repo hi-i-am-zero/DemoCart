@@ -129,7 +129,7 @@ public class ProductController extends HttpServlet {
         ProductDAO dao = new ProductDAO();
         //get ve data
         String name = request.getParameter("product_name");
-        float price = Float.parseFloat(request.getParameter("price"));
+        double price = Double.parseDouble(request.getParameter("price"));
         int quantity = Integer.parseInt(request.getParameter("stock_quantity"));
         String category = request.getParameter("category");
 
@@ -149,7 +149,7 @@ public class ProductController extends HttpServlet {
         //get ve data
         int id = Integer.parseInt(request.getParameter("id"));
         String name = request.getParameter("product_name");
-        float price = Float.parseFloat(request.getParameter("price"));
+        double price = Double.parseDouble(request.getParameter("price"));
         int quantity = Integer.parseInt(request.getParameter("stock_quantity"));
         String category = request.getParameter("category");
 

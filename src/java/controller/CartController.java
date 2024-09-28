@@ -4,7 +4,10 @@
  */
 package controller;
 
+import dal.OrderDetailDAO;
 import dal.ProductDAO;
+import entity.Cart;
+import entity.CartItem;
 import entity.Product;
 import jakarta.servlet.RequestDispatcher;
 import java.io.IOException;
@@ -26,12 +29,19 @@ public class CartController extends HttpServlet {
     
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        HttpSession session = request.getSession();
-        List<Product> products = (List<Product>) session.getAttribute("cart");
-        
-        request.setAttribute("products", products);
-        
-        request.getRequestDispatcher("cart.jsp").forward(request, response);
+        response.setContentType("text/html;charset=UTF-8");
+        try (PrintWriter out = response.getWriter()) {
+            /* TODO output your page here. You may use following sample code. */
+            out.println("<!DOCTYPE html>");
+            out.println("<html>");
+            out.println("<head>");
+            out.println("<title>Servlet CartItemsListController</title>");
+            out.println("</head>");
+            out.println("<body>");
+            out.println("<h1>Servlet CartItemsListController at " + request.getContextPath() + "</h1>");
+            out.println("</body>");
+            out.println("</html>");
+        }
     }
     
     @Override
@@ -43,46 +53,26 @@ public class CartController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        PrintWriter out = response.getWriter();
-        
+        int product_id = Integer.parseInt(request.getParameter("id"));
+        // Lấy session hiện tại
         HttpSession session = request.getSession();
-        List<Product> products = (List<Product>) session.getAttribute("cart");
-        
-        String action = request.getParameter("action");
-        int id = Integer.parseInt(request.getParameter("id"));
-        
-        if (products == null) {
-            products = new ArrayList<>();
-        } else {
-            
-            switch (action) {
-                case "add" -> {
-                    ProductDAO p = new ProductDAO();
-                    Product product;
-                    boolean isExist = products.stream().anyMatch(pro -> pro.getProduct_id() == id);
-                    
-                    if (isExist) {
-                        product = products.stream().filter(prod -> prod.getProduct_id() == id)
-                                .findFirst().orElse(null);
-                        
-                        product.setStock_quantity(
-                                product.getStock_quantity() + 1
-                        );
-                    } else {
-                        product = p.findById(id);
-                        product.setStock_quantity(1);
-                        products.add(product);
-                    }
-                    out.print(product.getStock_quantity());
-                }
-                
-                case "remove" -> {
-                    products.removeIf(p -> p.getProduct_id() == id);
-                }
-            }
+        // Kiểm tra xem CartDTO đã tồn tại trong session chưa
+        Cart cart = (Cart) session.getAttribute("Cart");
+        // Nếu chưa có CartDTO trong session, tạo mới CartDTO
+        if (cart == null) {
+            cart = new Cart();
         }
-        session.setAttribute("cart", products);
-        processRequest(request, response);
+        ProductDAO productDAO = new ProductDAO();
+        OrderDetailDAO orderDetailDAO = new OrderDetailDAO();
+        double price = productDAO.findById(product_id).getPrice();
+        String name = productDAO.findById(product_id).getProduct_name();
+        int quantity = orderDetailDAO.getOderDetailByProductID(product_id).getQuantity();
+
+        CartItem cartitem = new CartItem(1, product_id, name, price, quantity);
+        cart.addItem(cartitem);
+        session.setAttribute("Cart", cart);
+        RequestDispatcher dispatcher = request.getRequestDispatcher("cart.jsp");
+        dispatcher.forward(request, response);
     }
     
 }

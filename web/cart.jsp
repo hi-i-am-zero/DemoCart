@@ -13,41 +13,56 @@
         <title>JSP Page</title>
     </head>
     <body>
-        <c:if test="${not empty products}">
-            <table border="1">
+        <a href="list.jsp">Back to Products list</a>
+        <h1> Your Cart</h1>
+        <table border="1">
+            <thead>
                 <tr>
-                    <th>Id</th>
-                    <th>Name</th>
+                    <th>Cart ID</th>
+                    <th>Product ID</th>
+                    <th>Product Name</th>
                     <th>Price</th>
-                    <th>Quantity</th>
-                    <th></th>
+                    <th>Total Items</th>
+                    <th>Sub Total</th>
+                    <th>Remove</th>
+                    <th>Increase quantity</th>
+                    <th>Decrease quantity</th>
+
                 </tr>
-                <c:forEach items="${products}" var="p">
+            </thead>
+            <tbody>
+                <!-- Lặp qua danh sách CartItem trong Cart -->
+                <c:forEach var="cartItem" items="${Cart.list}">
                     <tr>
-                    <form action="cart" method="post">
-                        <input type="hidden" name="id" value="${p.product_id}" />
-                        <input type="hidden" name="action" value="remove" />
-                        <td>${p.product_id}</td>
-                        <td>${p.product_name}</td>
-                        <td>${p.price}</td>
-                        <td>${p.stock_quantity}</td>
-                        <td><button type="submit">Remove</button></td>
-                    </form>
-                </tr>
-            </c:forEach>
-        </table>
-    </c:if>
-    <c:if test="${empty products}">
-        <p>Your cart is empty.</p>
-    </c:if>
-    <a href="product">Home</a>
-    <div>
-        Total: 
-         <c:set var="total" value="0" />
-        <c:forEach  items="${products}" var="p">
-            <c:set var="total" value="${total + (p.stock_quantity * p.price)}"></c:set>
-        </c:forEach>
-        <span>${total}</span>
-    </div>
-</body>
+                        <td>${cartItem.cartId}</td>
+                        <td>${cartItem.product_id}</td>
+                        <td>${cartItem.product_name}</td>
+                        <td>${cartItem.price}</td>
+                        <td>${cartItem.totalItem}</td>
+                        <td>${cartItem.totalItem*cartItem.price}</td>
+                        <td style="text-align: center">
+                            <form action="remove" method="POST">
+                                <input type="hidden" name="cartID"  value="${cartItem.cartId}">
+                                <input type="submit" value="✖" />
+                            </form>
+                        </td>
+                        <!--                         increase Quantity-->
+                        <td style="text-align: center">
+                            <form action="ascQuantity" method="POST">
+                                <input type="hidden" name="id"  value="${cartItem.product_id}">
+                                <input type="submit" value="+" />
+                            </form>
+                        </td>
+
+                        <!--                         decrease Quantity-->
+                        <td style="text-align: center">
+                            <form action="descQuantity" method="POST">
+                                <input type="hidden" name="id"  value="${cartItem.product_id}">
+                                <input type="submit" value="-" />
+                            </form>
+                        </td>
+                    </tr>
+                </c:forEach>
+            </tbody>
+    </body>
 </html>

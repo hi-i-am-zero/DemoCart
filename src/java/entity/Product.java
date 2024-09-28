@@ -13,7 +13,7 @@ import java.sql.Timestamp;
 public class Product {
     private int product_id;
     private String product_name;
-    private float price;
+    private double price;
     private int stock_quantity;
     private String category;
     private String created_at;
@@ -21,7 +21,7 @@ public class Product {
     public Product() {
     }
 
-    public Product(int product_id, String product_name, float price, int stock_quantity, String category, String created_at) {
+    public Product(int product_id, String product_name, double price, int stock_quantity, String category, String created_at) {
         this.product_id = product_id;
         this.product_name = product_name;
         this.price = price;
@@ -46,11 +46,11 @@ public class Product {
         this.product_name = product_name;
     }
 
-    public float getPrice() {
+    public double getPrice() {
         return price;
     }
 
-    public void setPrice(float price) {
+    public void setPrice(double price) {
         this.price = price;
     }
 
@@ -76,6 +76,11 @@ public class Product {
 
     public void setCreated_at(String created_at) {
         this.created_at = created_at;
+    }
+
+    @Override
+    public String toString() {
+        return "Product{" + "product_id=" + product_id + ", product_name=" + product_name + ", price=" + price + ", stock_quantity=" + stock_quantity + ", category=" + category + ", created_at=" + created_at + '}';
     }
     
 }

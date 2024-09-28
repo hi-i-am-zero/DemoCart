@@ -37,7 +37,7 @@ public class ProductDAO extends DBContext {
             while (rs.next()) {
                 int product_id = rs.getInt("product_id");
                 String product_name = rs.getString("product_name").trim();
-                float price = rs.getFloat("price");
+                double price = rs.getDouble("price");
                 int stock_quantity = rs.getInt("stock_quantity");
                 String category = rs.getString("category");
                 String created_at = rs.getString("created_at");
@@ -75,7 +75,7 @@ public class ProductDAO extends DBContext {
             //- trả về kết quả
             while (rs.next()) {
                 String product_name = rs.getString("product_name").trim();
-                float price = rs.getFloat("price");
+                double price = rs.getDouble("price");
                 int stock_quantity = rs.getInt("stock_quantity");
                 String category = rs.getString("category");
                 String created_at = rs.getString("created_at");
@@ -113,7 +113,7 @@ public class ProductDAO extends DBContext {
             while (rs.next()) {
                 int product_id = rs.getInt("product_id");
                 String product_name = rs.getString("product_name").trim();
-                float price = rs.getFloat("price");
+                double price = rs.getDouble("price");
                 int stock_quantity = rs.getInt("stock_quantity");
                 String category = rs.getString("category");
                 String created_at = rs.getString("created_at");
